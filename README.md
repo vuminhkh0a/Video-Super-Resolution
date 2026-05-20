@@ -68,7 +68,6 @@ Install OpenMIM, MMCV, MMEngine
 ```bash
 pip install -U openmim
 mim install "mmcv==2.0.0"
-pip install -r requirements.txt
 ```
 
 Verify installation
@@ -81,12 +80,13 @@ print(mmengine.__version__); \
 print(mmagic.__version__)"
 ```
 
-Install mmagic
+Install mmagic and dependencies
 ```bash
 git clone https://github.com/open-mmlab/mmagic.git
 cd mmagic
 pip install -e . -v
 cd ..
+pip install -r requirements.txt
 ```
 ---
 
