@@ -47,6 +47,14 @@ project/
 
 # Installation
 
+Install [Annaconda](https://www.anaconda.com/docs/getting-started/anaconda/install/overview)
+
+Clone and navigate the repository
+```bash
+git clone https://github.com/vuminhkh0a/Video-Super-Resolution.git
+cd Video-Super-Resolution
+```
+
 Create conda environment
 
 ```bash
