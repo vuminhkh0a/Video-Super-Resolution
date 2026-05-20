@@ -1,63 +1,12 @@
-# =====================================
-# 1. Tạo environment tên venv
-# =====================================
-conda create -n venv python=3.8 -y
+openmim
+mmcv==2.0.0
+mmengine==0.7.4
+mmagic==1.0.0
 
-# =====================================
-# 2. Activate environment
-# =====================================
-conda activate venv
+diffusers==0.20.2
+huggingface_hub==0.16.4
 
-# =====================================
-# 3. Cài PyTorch + CUDA
-# =====================================
-conda install pytorch=1.10.0 torchvision=0.11.0 cudatoolkit=11.3 -c pytorch -y
-
-# =====================================
-# 4. Cài OpenMIM
-# =====================================
-pip install -U openmim
-
-# =====================================
-# 5. Cài MMCV
-# =====================================
-mim install "mmcv==2.0.0"
-
-# =====================================
-# 6. Cài MMEngine
-# =====================================
-pip install "mmengine==0.7.4"
-
-# =====================================
-# 7. Cài MMagic
-# =====================================
-pip install "mmagic==1.0.0"
-
-# =====================================
-# 8. Verify
-# =====================================
-python -c "import torch, mmcv, mmengine, mmagic; \
-print(torch.__version__); \
-print(mmcv.__version__); \
-print(mmengine.__version__); \
-print(mmagic.__version__)"
-
-pip uninstall diffusers -y
-
-pip install diffusers==0.20.2
-
-pip uninstall huggingface_hub -y
-
-pip install huggingface_hub==0.16.4
-
-pip install \
-transformers==4.30.2 \
+transformers==4.30.2
 accelerate==0.21.0
 
-pip install setuptools==59.5.0
-
-git clone https://github.com/open-mmlab/mmagic.git
-cd mmagic
-pip install -e . -v
-
-
+setuptools==59.5.0
