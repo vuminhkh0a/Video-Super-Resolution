@@ -20,7 +20,7 @@ from model import (
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 models = {
-        'BasicVSR': BasicVSRWrapper(checkpoint_path='./checkpoints/vsrnet_checkpoints/basicvsr_reds4_20120409-0e599677.pth', device=device),
+        'BasicVSR': BasicVSRWrapper(checkpoint_path='./checkpoints/basicvsr_checkpoints/basicvsr_reds4_20120409-0e599677.pth', device=device),
         'EDVR': EDVRWrapper(checkpoint_path='./checkpoints/edvr_checkpoints/edvrl_c128b40_8x8_lr2e-4_600k_reds4_20220104-4509865f.pth', device=device),
         'RSDN': RSDNWrapper(checkpoint_path='./checkpoints/rsdn_checkpoints/RSDN.pth', device=device),
         'OVSR': OVSRWrapper(checkpoint_path='./checkpoints/ovsr_checkpoints/0721.pth', device=device)
