@@ -47,7 +47,9 @@ project/
 
 # Installation
 
-Install [Annaconda](https://www.anaconda.com/docs/getting-started/anaconda/install/overview)
+Install [Annaconda](https://www.anaconda.com/docs/getting-started/anaconda/install/overview) and Python3 on Ubuntu
+
+Please strictly follow these installation steps:
 
 Clone and navigate the repository
 ```bash
@@ -130,19 +132,41 @@ checkpoints/
 
 # Run Evaluation
 
+Before running, make sure:
+- CUDA and GPU drivers are installed correctly
+- PyTorch detects CUDA successfully
+
+Quick CUDA check:
+
+```bash
+python3 -c "import torch; print(torch.cuda.is_available())"
+```
+
+If the output is `True`, you can run:
+
 ```bash
 python3 main.py
 ```
 
----
+# Live Demo
 
-# Live demo
+Before running, make sure:
+- CUDA and GPU drivers are installed correctly
+- PyTorch detects CUDA successfully
 
-Run the code and navigate to the given link from Gradio (please check both the given local URL and public URL)
+Quick CUDA check:
+
+```bash
+python3 -c "import torch; print(torch.cuda.is_available())"
+```
+
+If the output is `True`, run:
 
 ```bash
 python3 demo_app.py
 ```
+
+Then navigate to the Gradio local URL or public URL shown in the terminal.
 
 ---
 
