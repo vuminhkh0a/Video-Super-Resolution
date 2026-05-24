@@ -49,7 +49,7 @@ def evaluate(model, loader, device):
     model.eval()
 
     for bd, bi, gt in tqdm(loader):
-
+        
         bi = bi.to(device)
         gt = gt.to(device)
 
@@ -77,24 +77,144 @@ def evaluate(model, loader, device):
     return {'PSNR': avg_psnr, 'SSIM': avg_ssim, 'FPS': fps, 'Latency': latency_per_frame,}
 
 
+
+def evaluate(model, loader, device):
+    '''
+    Evaluate a video super-resolution model on both:
+        - BI (bicubic degradation)
+        - BD (blur-down degradation)
+
+    Metrics:
+        - PSNR
+        - SSIM
+        - FPS
+        - Latency per frame
+
+    Args:
+        model (nn.Module):
+            Video super-resolution model.
+
+        loader (DataLoader):
+            Returns:
+                bd : blurry-downsampled sequence
+                bi : bicubic-downsampled sequence
+                gt : ground-truth HR sequence
+
+        device:
+            cuda or cpu
+
+    Returns:
+        {
+            'BI': {...},
+            'BD': {...}
+        }
+    '''
+
+    model.eval()
+
+    results = {
+        'BI': {
+            'PSNR': 0,
+            'SSIM': 0,
+            'TIME': 0,
+            'FRAMES': 0,
+            'COUNT': 0
+        },
+        'BD': {
+            'PSNR': 0,
+            'SSIM': 0,
+            'TIME': 0,
+            'FRAMES': 0,
+            'COUNT': 0
+        }
+    }
+
+    for bd, bi, gt in tqdm(loader):
+
+        bd = bd.to(device)
+        bi = bi.to(device)
+        gt = gt.to(device)
+
+        with torch.no_grad():
+            start_time = time.time()
+            pred_bi = model(bi)
+            end_time = time.time()
+
+        inference_time = end_time - start_time
+
+        psnr_bi = metric_psnr(pred_bi, gt)
+        ssim_bi = metric_ssim(pred_bi, gt)
+
+        results['BI']['PSNR'] += psnr_bi
+        results['BI']['SSIM'] += ssim_bi
+        results['BI']['TIME'] += inference_time
+        results['BI']['FRAMES'] += bi.shape[1]
+        results['BI']['COUNT'] += 1
+
+        with torch.no_grad():
+            start_time = time.time()
+            pred_bd = model(bd)
+            end_time = time.time()
+
+        inference_time = end_time - start_time
+
+        psnr_bd = metric_psnr(pred_bd, gt)
+        ssim_bd = metric_ssim(pred_bd, gt)
+
+        results['BD']['PSNR'] += psnr_bd
+        results['BD']['SSIM'] += ssim_bd
+        results['BD']['TIME'] += inference_time
+        results['BD']['FRAMES'] += bd.shape[1]
+        results['BD']['COUNT'] += 1
+
+    final_results = {}
+
+    for key in ['BI', 'BD']:
+
+        avg_psnr = results[key]['PSNR'] / results[key]['COUNT']
+        avg_ssim = results[key]['SSIM'] / results[key]['COUNT']
+
+        fps = results[key]['FRAMES'] / results[key]['TIME']
+
+        latency = (results[key]['TIME'] / results[key]['FRAMES']) * 1000
+
+        final_results[key] = {'PSNR': avg_psnr, 'SSIM': avg_ssim, 'FPS': fps, 'Latency': latency}
+
+    return final_results
+
 def main():
 
-    device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
+    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
     loader = get_loader(batch_size=1, num_workers=4, pin_memory=True)
     models = {
-        'BasicVSR': BasicVSRWrapper(checkpoint_path='./checkpoints/vsrnet_checkpoints/basicvsr_vimeo90k_bi_20210409-d2d8f760.pth', device=device),
+        'BasicVSR': BasicVSRWrapper(checkpoint_path='./checkpoints/vsrnet_checkpoints/basicvsr_reds4_20120409-0e599677.pth', device=device),
         'EDVR': EDVRWrapper(checkpoint_path='./checkpoints/edvr_checkpoints/edvrl_c128b40_8x8_lr2e-4_600k_reds4_20220104-4509865f.pth', device=device),
         'RSDN': RSDNWrapper(checkpoint_path='./checkpoints/rsdn_checkpoints/RSDN.pth', device=device),
         'OVSR': OVSRWrapper(checkpoint_path='./checkpoints/ovsr_checkpoints/0721.pth', device=device)
     }
 
     for name, model in models.items():
+
+        print(f"\n{'=' * 60}")
+        print(f"Evaluating {name}")
+        print(f"{'=' * 60}")
+
         results = evaluate(model=model, loader=loader, device=device)
-        print(f"\nModel: {name}")
-        print(f"PSNR               : {results['PSNR']:.4f}")
-        print(f"SSIM               : {results['SSIM']:.4f}")
-        print(f"FPS                : {results['FPS']:.2f}")
-        print(f"Latency per frame  : {results['Latency']:.2f} ms")
+
+
+        print("\n[BI Dataset]")
+        print(f"PSNR               : {results['BI']['PSNR']:.4f}")
+        print(f"SSIM               : {results['BI']['SSIM']:.4f}")
+        print(f"FPS                : {results['BI']['FPS']:.2f}")
+        print(f"Latency per frame  : {results['BI']['Latency']:.2f} ms")
+
+
+        print("\n[BD Dataset]")
+        print(f"PSNR               : {results['BD']['PSNR']:.4f}")
+        print(f"SSIM               : {results['BD']['SSIM']:.4f}")
+        print(f"FPS                : {results['BD']['FPS']:.2f}")
+        print(f"Latency per frame  : {results['BD']['Latency']:.2f} ms")
+
 
 if __name__ == "__main__":
     main()

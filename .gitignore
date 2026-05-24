@@ -2,4 +2,6 @@ mmediting/
 checkpoints/
 run.txt 
 log.txt
-requirements2.txt
+checkpoints/edvr_checkpoints/
+checkpoints/ovsr_checkpoints/
+checkpoints/rsdn_checkpoints/

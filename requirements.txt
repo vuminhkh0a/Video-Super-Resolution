@@ -1,3 +1,5 @@
+gradio
+
 openmim
 mmcv==2.0.0
 mmengine==0.7.4
@@ -10,3 +12,4 @@ transformers==4.30.2
 accelerate==0.21.0
 
 setuptools==59.5.0
+imageio[ffmpeg]

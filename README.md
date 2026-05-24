@@ -87,6 +87,7 @@ cd mmagic
 pip install -e . -v
 cd ..
 pip install -r requirements.txt
+conda install ffmpeg -y
 ```
 ---
 
@@ -145,20 +146,12 @@ python3 main.py
 
 ---
 
-# Example Output
+# Live demo
 
-```text
-Model: BasicVSR
-PSNR               : 27.8421
-SSIM               : 0.8231
-FPS                : 41.23
-Latency per frame  : 24.25 ms
+Run the code and navigate to the given link from Gradio (please check both the given local URL and public URL)
 
-Model: EDVR
-PSNR               : 27.5124
-SSIM               : 0.8174
-FPS                : 18.74
-Latency per frame  : 53.36 ms
+```bash
+python3 demo_app.py
 ```
 
 ---
