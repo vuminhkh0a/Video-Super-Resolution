@@ -70,16 +70,6 @@ pip install -U openmim
 mim install "mmcv==2.0.0"
 ```
 
-Verify installation
-
-```bash
-python -c "import torch, mmcv, mmengine, mmagic; \
-print(torch.__version__); \
-print(mmcv.__version__); \
-print(mmengine.__version__); \
-print(mmagic.__version__)"
-```
-
 Install mmagic and dependencies
 ```bash
 git clone https://github.com/open-mmlab/mmagic.git
