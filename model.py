@@ -64,7 +64,7 @@ class EDVRWrapper(nn.Module):
         self.radius = self.num_frames // 2
 
         self.model = EDVRNet(in_channels=3, out_channels=3, mid_channels=128, num_frames=self.num_frames, \
-            center_frame_idx=self.radius, deform_groups=8, num_blocks_extraction=5, num_blocks_reconstruction=10, with_tsa=True)
+            center_frame_idx=self.radius, deform_groups=8, num_blocks_extraction=5, num_blocks_reconstruction=20, with_tsa=True)
 
         # Fix loading weight error from mmagic (change prefix generator.spynet to spynet)
 
