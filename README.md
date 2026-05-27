@@ -85,7 +85,7 @@ conda install ffmpeg -y
 
 # Dataset Preparation
 
-Download the [Vid4 dataset](https://www.kaggle.com/datasets/uom200647r/vid4-dataset?select=BIx4) (if not) and organize it as:
+Download the [Vid4 dataset](https://www.kaggle.com/datasets/uom200647r/vid4-dataset?select=BIx4) (if the `data/` folder is empty) and organize it as:
 
 ```text
 data/
@@ -115,7 +115,7 @@ Each sequence folder contains multiple consecutive frames.
 
 # Checkpoint Preparation
 
-Place pretrained checkpoints inside (if not):
+Place pretrained checkpoints inside (if the `checkpoints/` folder is empty):
 
 ```text
 checkpoints/
