@@ -167,6 +167,6 @@ python3 demo_app.py
 ```
 
 - Then navigate to the Gradio local URL or public URL shown in the terminal.
-- [Backup Colab Live Demo System](https://colab.research.google.com/drive/1aZAdDl2wsIR6QAOqesv7VFRWrgG0UmbC?usp=sharing) (No BasicVSR and EDVR available on backup demo)
+- If the local live demo system is failed, please navigate the [Backup Colab Live Demo System](https://colab.research.google.com/drive/1aZAdDl2wsIR6QAOqesv7VFRWrgG0UmbC?usp=sharing) (No BasicVSR and EDVR available on backup demo)
 ---
 
