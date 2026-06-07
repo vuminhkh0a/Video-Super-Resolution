@@ -8,73 +8,73 @@ from metrics import metric_psnr, metric_ssim
 from model import *
 
 
-def evaluate(model, loader, device):
-    '''
-    Evaluate a video super-resolution model on a dataset.
+# def evaluate(model, loader, device):
+#     '''
+#     Evaluate a video super-resolution model on a dataset.
 
-    The evaluation computes:
-        - PSNR (Peak Signal-to-Noise Ratio)
-        - SSIM (Structural Similarity Index)
-        - FPS (Frames Per Second)
-        - Latency per frame (ms)
+#     The evaluation computes:
+#         - PSNR (Peak Signal-to-Noise Ratio)
+#         - SSIM (Structural Similarity Index)
+#         - FPS (Frames Per Second)
+#         - Latency per frame (ms)
 
-    Args:
-        model (nn.Module):
-            Video super-resolution model.
+#     Args:
+#         model (nn.Module):
+#             Video super-resolution model.
 
-        loader (DataLoader):
-            PyTorch DataLoader that returns:
-                bd : degraded blurry sequence
-                bi : degraded bicubic sequence
-                gt : ground-truth high-resolution sequence
+#         loader (DataLoader):
+#             PyTorch DataLoader that returns:
+#                 bd : degraded blurry sequence
+#                 bi : degraded bicubic sequence
+#                 gt : ground-truth high-resolution sequence
 
-        device (str or torch.device):
-            Device used for inference (e.g., 'cuda:0' or 'cpu').
+#         device (str or torch.device):
+#             Device used for inference (e.g., 'cuda:0' or 'cpu').
 
-    Returns:
-        dict:
-            {
-                'PSNR'   : average PSNR over all sequences,
-                'SSIM'   : average SSIM over all sequences,
-                'FPS'    : inference throughput (frames per second),
-                'Latency': average inference latency per frame in milliseconds
-            }
-    '''
-    total_psnr = 0
-    total_ssim = 0
-    total_time = 0
-    total_frames = 0
-    count = 0
+#     Returns:
+#         dict:
+#             {
+#                 'PSNR'   : average PSNR over all sequences,
+#                 'SSIM'   : average SSIM over all sequences,
+#                 'FPS'    : inference throughput (frames per second),
+#                 'Latency': average inference latency per frame in milliseconds
+#             }
+#     '''
+#     total_psnr = 0
+#     total_ssim = 0
+#     total_time = 0
+#     total_frames = 0
+#     count = 0
 
-    model.eval()
+#     model.eval()
 
-    for bd, bi, gt in tqdm(loader):
+#     for bd, bi, gt in tqdm(loader):
         
-        bi = bi.to(device)
-        gt = gt.to(device)
+#         bi = bi.to(device)
+#         gt = gt.to(device)
 
-        with torch.no_grad():
-            start_time = time.time()
-            pred = model(bi)
-            end_time = time.time()
+#         with torch.no_grad():
+#             start_time = time.time()
+#             pred = model(bi)
+#             end_time = time.time()
 
-        inference_time = end_time - start_time
-        total_time += inference_time
-        n_frames = bi.shape[1]
-        total_frames += n_frames
+#         inference_time = end_time - start_time
+#         total_time += inference_time
+#         n_frames = bi.shape[1]
+#         total_frames += n_frames
 
-        psnr = metric_psnr(pred, gt)
-        ssim = metric_ssim(pred, gt)
-        total_psnr += psnr
-        total_ssim += ssim
-        count += 1
+#         psnr = metric_psnr(pred, gt)
+#         ssim = metric_ssim(pred, gt)
+#         total_psnr += psnr
+#         total_ssim += ssim
+#         count += 1
 
-    avg_psnr = total_psnr / count
-    avg_ssim = total_ssim / count
-    fps = total_frames / total_time
-    latency_per_frame = (total_time / total_frames) * 1000  
+#     avg_psnr = total_psnr / count
+#     avg_ssim = total_ssim / count
+#     fps = total_frames / total_time
+#     latency_per_frame = (total_time / total_frames) * 1000  
 
-    return {'PSNR': avg_psnr, 'SSIM': avg_ssim, 'FPS': fps, 'Latency': latency_per_frame,}
+#     return {'PSNR': avg_psnr, 'SSIM': avg_ssim, 'FPS': fps, 'Latency': latency_per_frame,}
 
 
 
