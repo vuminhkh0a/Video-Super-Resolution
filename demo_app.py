@@ -362,7 +362,7 @@ with gr.Blocks(title="Video Super Resolution Demo", theme=gr.themes.Soft()) as d
     with gr.Row():
         with gr.Column():
             deg_method = gr.Radio(choices=["Bicubic Downsample", "Bicubic Interpolated"], value="Bicubic Downsample", label="Degradation Method")
-            deg_level = gr.Slider(minimum=2, maximum=10, value=4, step=1, label="Scale Factor")
+            deg_level = gr.Slider(minimum=2, maximum=10, value=10, step=1, label="Scale Factor")
 
 
         with gr.Column():
